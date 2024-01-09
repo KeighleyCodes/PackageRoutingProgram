@@ -1,17 +1,23 @@
 # Name: Keighley Manke
-# Student ID:
-# WGU C950
+# Student ID: 001321515
+# Class: WGU C950
 
+# import Excel files as csv
 import csv
+
+# import hashtable to Main
 from CreateHashTable import HashTable
 
 # Import Distance Table
-with open(r"C:\Users\Owner\OneDrive\Desktop\DistanceTable.csv") as distanceTable:
+with open(r"DistanceTable.csv") as distanceTable:
     reader = csv.reader(distanceTable)
+    for row in reader:
+        print(row)
 
 # Import Package File
-with open(r"C:\Users\Owner\OneDrive\Desktop\PackageFile.csv") as packageFile:
-    reader = csv.reader(packageFile)
+with open(r"PackageFile.csv") as packageFile:
+    reader_2 = csv.reader(packageFile)
+
 
 # Instantiate hash table
 myHash = HashTable()
