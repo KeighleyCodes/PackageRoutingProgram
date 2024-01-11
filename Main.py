@@ -11,12 +11,16 @@ from CreateHashTable import HashTable
 # Import Distance Table
 with open(r"DistanceTable.csv") as distanceTable:
     reader = csv.reader(distanceTable)
-    for row in reader:
-        print(row)
 
 # Import Package File
 with open(r"PackageFile.csv") as packageFile:
     reader_2 = csv.reader(packageFile)
+
+# Import Address File
+with open(r"AddressFile.csv") as addressFile:
+    reader_3 = csv.reader(addressFile)
+    for row in reader_3:
+        print(row)
 
 
 # Instantiate hash table

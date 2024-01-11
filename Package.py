@@ -15,3 +15,5 @@ class Package:
     def __repr__(self):
         return "%s,%s,%s,%s,%s,%s,%s,%s,%s" % (self.id, self.weight, self.address, self.city, self.loading_time,
                                                self.delivery_time, self.zip_code, self.deadline, self.status)
+
+    # TO DO: ADD UPDATE STAUTS FUNCTION
