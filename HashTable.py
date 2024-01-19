@@ -44,21 +44,23 @@ class CreateHashTable:
 
 
 if __name__ == '__main__':
-    def __init__(self, package_id, weight, address, city, zip_code, loading_time, delivery_time, deadline, truck,
-                 status):
+    def __init__(self, package_id, address, city, state, zip_code, deadline, weight, notes, truck, loading_time,
+                 delivery_time, status):
         self.id = package_id
-        self.weight = weight
         self.address = address
         self.city = city
-        self.loading_time = loading_time
-        self.delivery_time = delivery_time
+        self.state = state
         self.zip_code = zip_code
         self.deadline = deadline
+        self.weight = weight
+        self.notes = notes
         self.truck = truck
+        self.loading_time = loading_time
+        self.delivery_time = delivery_time
         self.status = status
 
 
 def __repr__(self):
-    return "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (self.id, self.weight, self.address, self.city, self.loading_time,
-                                              self.delivery_time, self.zip_code, self.deadline, self.truck,
-                                              self.status)
+    return "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (self.id, self.address, self.city, self.state, self.zip_code,
+                                                    self.deadline, self.weight, self.notes, self.truck,
+                                                    self.loading_time, self.delivery_time, self.status)
