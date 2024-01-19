@@ -4,20 +4,25 @@
 
 # import Excel files as csv
 import csv
-from ImportCSV import package_hash_table
+from ImportCSV import CreateHashTable, packageHashTable
+import Package
+import HashTable
 
-# Import Distance Table
+# import hashtable to Main
+from HashTable import CreateHashTable
+
+# Import Distance Table.
 with open(r"DistanceTable.csv") as distanceTable:
     reader = csv.reader(distanceTable)
 
 # Import Package File
-# with open(r"PackageFile.csv") as packageFile:
-#    reader_2: reader = csv.reader(packageFile)
-#    for row in reader_2:
-#       print(row)
+with open(r"PackageFile.csv") as packageFile:
+    reader_2 = csv.reader(packageFile)
 
 # Import Address File
-with open(r"AddressFile.csv") as addressFile:
-    reader_3 = csv.reader(addressFile)
+    with open(r"AddressFile.csv") as addressFile:
+        reader_3 = csv.reader(addressFile)
+# for row in reader_3:
+# print(row)
 
-#print(packageHashTable)
+print(packageHashTable)

@@ -13,20 +13,21 @@ with open(r"PackageFile.csv") as packageFile:
         pCity = package[2]
         pState = package[3]
         pZip = package[4]
-        pDeadline = package[5]
+        pDeadline = package[4]
         pWeight = package[6]
         pNotes = package[7]
-        pTruck = package[8]
-        pLoadingTime = package[9]
-        pDeliveryTime = package[10]
+        pTruck = "0"
+        pLoadingTime = "00:00"
+        pDeliveryTime = "00:00"
         pStatus = "Waiting"  # initial status set to waiting
 
         # package object
-        p = Package(pID, pAddress, pCity, pState, pZip, pDeadline, pWeight, pNotes, pTruck, pLoadingTime, pDeliveryTime,
-                    pStatus)
+        p = Package(pID, pAddress, pCity, pState, pZip, pDeadline, pWeight, pNotes, pTruck, pLoadingTime,
+                    pDeliveryTime, pStatus)
+
         # print(p)
 
         # insert it into the hash table
         packageHashTable.insert(pID, p)
 
-print(packageHashTable)
+        print(packageHashTable)
