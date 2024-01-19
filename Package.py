@@ -18,10 +18,8 @@ class Package:
         self.delivery_time = delivery_time
         self.status = status
 
-# def __repr__(self): return f'{self.id}: {self.address}, {self.city}, {self.state}, {self.zip_code},
-    # {self.deadline}, {self.weight}, {self.truck}, {self.loading_time}, {self.delivery_time}, {self.status}'
-    # <HashTable.CreateHashTable object at 0x00000258D0655340> <HashTable.CreateHashTable object at
-    # 0x0000023B09F05340> for printing
+    def __str__(self): return f'{self.id}: {self.address}, {self.city}, {self.state}, {self.zip_code}, {self.deadline}, {self.weight}, {self.truck}, {self.loading_time}, {self.delivery_time}, {self.status}'
+
     def __repr__(self):
         return "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (self.id, self.address, self.city, self.state, self.zip_code,
                                                         self.deadline, self.weight, self.notes, self.truck,

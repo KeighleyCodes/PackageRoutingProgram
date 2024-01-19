@@ -60,6 +60,10 @@ if __name__ == '__main__':
         self.status = status
 
 
+def __str__(
+        self): return f'{self.id}: {self.address}, {self.city}, {self.state}, {self.zip_code}, {self.deadline}, {self.weight}, {self.truck}, {self.loading_time}, {self.delivery_time}, {self.status}'
+
+
 def __repr__(self):
     return "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (self.id, self.address, self.city, self.state, self.zip_code,
                                                     self.deadline, self.weight, self.notes, self.truck,
