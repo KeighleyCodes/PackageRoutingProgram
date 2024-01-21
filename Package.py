@@ -18,8 +18,10 @@ class Package:
 
     # for printing
     def __str__(self):
-        return (f'STR is <{self.id} {self.address} {self.city} {self.state} {self.zip_code} {self.deadline}'
-                f' {self.weight} {self.notes} {self.truck} {self.loading_time} {self.delivery_time} {self.status}>')
+        return "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (self.id, self.address, self.city, self.state,
+                                                        self.zip_code, self.deadline, self.weight, self.notes,
+                                                        self.truck, self.loading_time, self.delivery_time,
+                                                        self.status)
 
     def __repr__(self):
         return "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (self.id, self.address, self.city, self.state,
@@ -27,11 +29,6 @@ class Package:
                                                         self.truck, self.loading_time, self.delivery_time,
                                                         self.status)
 
-    @property
-    def human_readable(self):
-        return (f'Readable representation is <{self.id} {self.address} {self.city} {self.state} {self.zip_code} '
-                f'{self.deadline} {self.weight} {self.notes} {self.truck} {self.loading_time} {self.delivery_time} '
-                f'{self.status}>')
 
 # TO DO: ADD UPDATE STATUS FUNCTION
 # def update_status(self):

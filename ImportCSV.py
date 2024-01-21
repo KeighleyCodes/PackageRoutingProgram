@@ -2,32 +2,34 @@
 import csv
 
 from Package import Package
-from HashTable import CreateHashTable
+from HashTable import HashTable
 
-packageHashTable = CreateHashTable()
+packageHashTable = HashTable()
+
 with open(r"PackageFile.csv") as packageFile:
     reader = csv.reader(packageFile, delimiter=',')
-    for package in packageFile:
-        pID = int(package[0])
-        pAddress = package[1]
-        pCity = package[2]
-        pState = package[3]
-        pZip = package[4]
-        pDeadline = package[4]
-        pWeight = package[6]
-        pNotes = package[7]
-        pTruck = "0"
-        pLoadingTime = "00:00"
-        pDeliveryTime = "00:00"
-        pStatus = "Waiting"  # initial status set to waiting
+
+    for row in reader:
+        p_id = int(row[0])
+        p_address = row[1]
+        p_city = row[2]
+        p_state = row[3]
+        p_zip = row[4]
+        p_deadline = row[5]
+        p_weight = row[6]
+        p_notes = ""
+        p_truck = "0"
+        p_loading_time = "00:00"
+        p_delivery_time = "00:00"
+        p_status = "Waiting"  # initial status set to waiting
 
         # package object
-        p = Package(pID, pAddress, pCity, pState, pZip, pDeadline, pWeight, pNotes, pTruck, pLoadingTime,
-                    pDeliveryTime, pStatus)
+        package_object = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight, p_notes, p_truck, p_loading_time,
+                                 p_delivery_time, p_status)
 
-        # print(p)
+        # print(package_object)
 
         # insert it into the hash table
-        packageHashTable.insert(pID, p)
+        packageHashTable.insert(p_id, package_object)
 
-        print(packageHashTable)
+# print(packageHashTable)
