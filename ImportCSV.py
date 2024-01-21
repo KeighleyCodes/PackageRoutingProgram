@@ -4,9 +4,9 @@ import csv
 from Package import Package
 from HashTable import HashTable
 
-packageHashTable = HashTable()
+package_hash_table = HashTable()
 
-with open(r"PackageFile.csv") as packageFile:
+with open(r"CSV_Files/PackageFile.csv") as packageFile:
     reader = csv.reader(packageFile, delimiter=',')
 
     for row in reader:
@@ -17,10 +17,10 @@ with open(r"PackageFile.csv") as packageFile:
         p_zip = row[4]
         p_deadline = row[5]
         p_weight = row[6]
-        p_notes = ""
-        p_truck = "0"
-        p_loading_time = "00:00"
-        p_delivery_time = "00:00"
+        p_notes = " " # FIX ME
+        p_truck = "0"  # initial truck not set
+        p_loading_time = "00:00"  # initial time not set
+        p_delivery_time = "00:00"  # initial time not set
         p_status = "Waiting"  # initial status set to waiting
 
         # package object
@@ -30,6 +30,6 @@ with open(r"PackageFile.csv") as packageFile:
         # print(package_object)
 
         # insert it into the hash table
-        packageHashTable.insert(p_id, package_object)
+        package_hash_table.insert(p_id, package_object)
 
-# print(packageHashTable)
+print(package_hash_table)

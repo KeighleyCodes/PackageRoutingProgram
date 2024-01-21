@@ -4,7 +4,7 @@
 
 # import Excel files as csv
 import csv
-from ImportCSV import HashTable, packageHashTable
+from ImportCSV import HashTable, package_hash_table
 import Package
 import HashTable
 
@@ -12,17 +12,17 @@ import HashTable
 from HashTable import HashTable
 
 # Import Distance Table.
-with open(r"DistanceTable.csv") as distanceTable:
+with open(r"CSV_Files/DistanceTable.csv") as distanceTable:
     reader = csv.reader(distanceTable)
 
 # Import Package File
-with open(r"PackageFile.csv") as packageFile:
+with open(r"CSV_Files/PackageFile.csv") as packageFile:
     reader_2 = csv.reader(packageFile)
 
 # Import Address File
-    with open(r"AddressFile.csv") as addressFile:
+    with open(r"CSV_Files/AddressFile.csv") as addressFile:
         reader_3 = csv.reader(addressFile)
 #       for row in reader_3:
 #           print(row)
 
-print(packageHashTable)
+print(package_hash_table)
