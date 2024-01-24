@@ -17,19 +17,16 @@ with open(r"CSV_Files/PackageFile.csv") as packageFile:
         p_zip = row[4]
         p_deadline = row[5]
         p_weight = row[6]
-        p_notes = " " # FIX ME
         p_truck = "0"  # initial truck not set
         p_loading_time = "00:00"  # initial time not set
         p_delivery_time = "00:00"  # initial time not set
         p_status = "Waiting"  # initial status set to waiting
 
         # package object
-        package_object = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight, p_notes, p_truck, p_loading_time,
+        package_object = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight, p_truck, p_loading_time,
                                  p_delivery_time, p_status)
 
         # print(package_object)
 
         # insert it into the hash table
         package_hash_table.insert(p_id, package_object)
-
-print(package_hash_table)

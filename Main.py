@@ -4,25 +4,32 @@
 
 # import Excel files as csv
 import csv
-from ImportCSV import HashTable, package_hash_table
-import Package
-import HashTable
 
-# import hashtable to Main
-from HashTable import HashTable
+from ImportCSV import package_object
+from Package import Package
+
+# Lists of lists to hold distances
+distance_lists = [[]]
+
+# Dictionary to hold addresses
+address_dictionary = dict()
 
 # Import Distance Table.
-with open(r"CSV_Files/DistanceTable.csv") as distanceTable:
-    reader = csv.reader(distanceTable)
+with open(r"CSV_Files/DistanceTable.csv", newline='') as distanceFile:
+    reader = csv.reader(distanceFile)
 
-# Import Package File
-with open(r"CSV_Files/PackageFile.csv") as packageFile:
-    reader_2 = csv.reader(packageFile)
+    # Pop address off each row and add to address dictionary. Add remaining row to distance list.
+    for row in reader:
+        # Remove address from DistanceTable
+        address = row.pop(0)  # variable to store popped address
 
-# Import Address File
-    with open(r"CSV_Files/AddressFile.csv") as addressFile:
-        reader_3 = csv.reader(addressFile)
-#       for row in reader_3:
-#           print(row)
+        # Add removed address to address table
+        # Assigns index to each address based on  length of the dictionary.
+        address_dictionary[address] = len(address_dictionary)
 
-print(package_hash_table)
+        # Adds remaining row to distance_lists
+        distance_lists.append(row)
+
+# print(distance_lists)
+
+
