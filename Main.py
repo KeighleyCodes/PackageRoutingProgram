@@ -9,7 +9,7 @@ from ImportCSV import package_object
 from Package import Package
 
 # Lists of lists to hold distances
-distance_lists = [[]]
+distance_lists = []
 
 # Dictionary to hold addresses
 address_dictionary = dict()
@@ -19,17 +19,16 @@ with open(r"CSV_Files/DistanceTable.csv", newline='') as distanceFile:
     reader = csv.reader(distanceFile)
 
     # Pop address off each row and add to address dictionary. Add remaining row to distance list.
-    for row in reader:
+    for index, row in enumerate(reader):
         # Remove address from DistanceTable
         address = row.pop(0)  # variable to store popped address
 
         # Add removed address to address table
         # Assigns index to each address based on  length of the dictionary.
-        address_dictionary[address] = len(address_dictionary)
+        address_dictionary[address] = index
 
         # Adds remaining row to distance_lists
         distance_lists.append(row)
 
-# print(distance_lists)
 
 

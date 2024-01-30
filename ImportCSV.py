@@ -4,11 +4,13 @@ import csv
 from Package import Package
 from HashTable import HashTable
 
+# Instantiate hash table
 package_hash_table = HashTable()
 
 with open(r"CSV_Files/PackageFile.csv") as packageFile:
     reader = csv.reader(packageFile, delimiter=',')
 
+    # Iterates over each row in Package File
     for row in reader:
         p_id = int(row[0])
         p_address = row[1]
@@ -25,8 +27,6 @@ with open(r"CSV_Files/PackageFile.csv") as packageFile:
         # package object
         package_object = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight, p_truck, p_loading_time,
                                  p_delivery_time, p_status)
-
-        # print(package_object)
 
         # insert it into the hash table
         package_hash_table.insert(p_id, package_object)

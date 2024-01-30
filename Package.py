@@ -1,6 +1,7 @@
 # class for packages
 
 class Package:
+    # Initialize package object
     def __init__(self, package_id, address, city, state, zip_code, deadline, weight, truck, loading_time,
                  delivery_time, status):
         self.id = package_id
