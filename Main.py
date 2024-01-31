@@ -48,7 +48,7 @@ def calculate_distance(location1, location2):
 # route_truck3 = address_dictionary[["HUB"]]
 
 # Nearest neighbor algorithm
-def nearest_location(current_location, unvisited_location):
+def delivery_route(current_location, unvisited_location):
     current_location = address_dictionary["HUB"]  # Starts the current location at the hub
     min_distance = float('inf')  # Sets minimum distance to infinity
     nearest_location = None  # initializes empty nearest distance variable
