@@ -77,10 +77,6 @@ truck2_packages = [3, 5, 8, 9, 10, 11, 14, 15, 16, 18, 19, 20, 21, 23, 28, 30, 3
 truck1_loading = datetime(2024, 1, 31, 8, 0)
 truck2_loading = datetime(2024, 1, 31, 9, 5)
 
-# Timestamp each package with loading time
-truck1_timestamp = datetime(2024, 1, 31, 8, 0)
-truck2_timestamp = datetime(2024, 1, 31, 9, 15)
-
 
 # -- TRUCK DELIVERY -- #
 
@@ -89,14 +85,18 @@ truck2_timestamp = datetime(2024, 1, 31, 9, 15)
 # def update_status(status):
 #    package_status = status
 
+
 # Space complexity 0(1)
 # Time complexity O(n^2), where n is the number of packages
 def package_delivery(truck_packages, start_time):
     # Current truck location initialization
     current_truck_location = 0  # Index of hub
 
+    # Initialize current total distance
+    total_distance = 0
+
     # Minimum distance initialization
-    min_distance = float('inf')  # Positive infinity to ensure any distance will be less
+   # min_distance = float('inf')  # Positive infinity to ensure any distance will be less
 
     # Minimum packages initialization
     min_package = None
@@ -120,7 +120,8 @@ def package_delivery(truck_packages, start_time):
             address_index = address_dictionary.get(package.address)
 
             # Retrieve distances from distance lists
-            distance = distance_lists[current_truck_location][address_index]
+            if current_truck_location < address_index:
+                distance = distance_lists[address_index][current_truck_location]
 
             # Convert distance to float
             distance = float(distance)
@@ -138,7 +139,10 @@ def package_delivery(truck_packages, start_time):
             trip_duration = distance / truck_speed
 
             # Add minutes to running time
-            running_time += trip_duration
+            running_time += timedelta(minutes=trip_duration)
+
+            # Add distance to total distance
+            total_distance += min_distance
 
             # Timestamp package with delivery time
             min_package.delivery_time = running_time
@@ -149,12 +153,31 @@ def package_delivery(truck_packages, start_time):
             # Set status of package to delivered
             min_package.status = 'Delivered'
 
-    # Check if all packages were successfully delivered
-    all_delivered = len(truck_packages) == 0
+            current_truck_location = address_dictionary.get(min_package.address)
 
-    return all_delivered
+    return total_distance, running_time
 
 
-package_delivery(truck1_packages, truck1_loading)
-package_delivery(truck2_packages, truck2_loading)
+# Calculates total distance travelled by truck 1
+total_distance_truck1, running_time_truck1 = package_delivery(truck1_packages, truck1_loading)
+
+# Rounds total distance to two places after the decimal
+truck1_total_distance = round(total_distance_truck1, 2)
+
+# Calculates total distance travelled by truck 2
+total_distance_truck2, running_time_truck2 = package_delivery(truck2_packages, truck2_loading)
+
+# Rounds total distance to two places after the decimal
+truck2_total_distance = round(total_distance_truck2, 2)
+
+# Calculates total distance travelled by both trucks
+total_distance_both = truck1_total_distance + truck2_total_distance
+
+print("Truck 1 total distance:", truck1_total_distance)
+print("Truck 1 final running time:", running_time_truck1)
+
+print("Truck 2 total distance:", truck2_total_distance)
+print("Truck 2 final running time:", running_time_truck2)
+
+print("Total distances both trucks:", total_distance_both)
 
