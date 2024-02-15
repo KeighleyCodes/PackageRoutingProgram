@@ -80,12 +80,7 @@ truck2_loading = datetime(2024, 1, 31, 9, 5)
 
 # -- TRUCK DELIVERY -- #
 
-# -- TO DO -- #
-# Update status function
-# def update_status(status):
-#    package_status = status
-
-
+# This is a nearest-neighbor algorithm. ## -- ADD MORE INFO HERE! -------------------
 # Space complexity 0(1)
 # Time complexity O(n^2), where n is the number of packages
 def package_delivery(truck_packages, start_time):
@@ -94,9 +89,6 @@ def package_delivery(truck_packages, start_time):
 
     # Initialize current total distance
     total_distance = 0
-
-    # Minimum distance initialization
-   # min_distance = float('inf')  # Positive infinity to ensure any distance will be less
 
     # Minimum packages initialization
     min_package = None
@@ -131,9 +123,13 @@ def package_delivery(truck_packages, start_time):
                 min_distance = distance
                 min_package = package
 
+        # If
         if min_package:
-            # Define truck speed
-            truck_speed = 18  # Assuming truck speed is constant
+            # Set status of package to en route
+            min_package.status = 'En Route'
+
+            # Define average truck speed
+            truck_speed = 18
 
             # Calculate trip duration
             trip_duration = distance / truck_speed
@@ -147,37 +143,59 @@ def package_delivery(truck_packages, start_time):
             # Timestamp package with delivery time
             min_package.delivery_time = running_time
 
+            # Sets current truck location to address of package
+            current_truck_location = address_dictionary.get(min_package.address)
+
             # Remove package from truck
             truck_packages.remove(min_package.id)
 
             # Set status of package to delivered
             min_package.status = 'Delivered'
 
-            current_truck_location = address_dictionary.get(min_package.address)
-
     return total_distance, running_time
 
 
-# Calculates total distance travelled by truck 1
+# -- TOTAL DISTANCE CALCULATIONS -- #
+
+# Calculates total distance traveled by truck 1
 total_distance_truck1, running_time_truck1 = package_delivery(truck1_packages, truck1_loading)
 
 # Rounds total distance to two places after the decimal
 truck1_total_distance = round(total_distance_truck1, 2)
 
-# Calculates total distance travelled by truck 2
+# Calculates total distance traveled by truck 2
 total_distance_truck2, running_time_truck2 = package_delivery(truck2_packages, truck2_loading)
 
 # Rounds total distance to two places after the decimal
 truck2_total_distance = round(total_distance_truck2, 2)
 
-# Calculates total distance travelled by both trucks
+# Calculates total distance traveled by both trucks
 total_distance_both = truck1_total_distance + truck2_total_distance
 
-print("Truck 1 total distance:", truck1_total_distance)
-print("Truck 1 final running time:", running_time_truck1)
 
-print("Truck 2 total distance:", truck2_total_distance)
-print("Truck 2 final running time:", running_time_truck2)
+# -- PRINTING PACKAGE STATUS -- #
 
-print("Total distances both trucks:", total_distance_both)
+def print_package_info(package_id, specified_time):
+    # Search for package ID
+    selected_package = package_hash_table.search(package_id)
+
+    # Check if package exists:
+    if selected_package:
+        print('                                  ')
+        print(f"Package ID: {selected_package.id}")
+
+        # Check the status of the package at the specified time
+        if selected_package.delivery_time == specified_time:
+            print(f"Status at specified time: Delivered")
+
+            # Print delivery time only if status is 'delivered'
+            print(f"Delivery Time: {selected_package.delivery_time}")
+
+        else:
+            print(f"Status at specified time: {selected_package.status}")
+
+        print('                                  ')
+
+    else:
+        print("Package not found.")
 
