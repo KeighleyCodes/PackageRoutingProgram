@@ -111,19 +111,16 @@ def package_delivery(truck_packages, start_time):
             # Use address field to retrieve corresponding index
             address_index = address_dictionary.get(package.address)
 
-            # Retrieve distances from distance lists
+            # Retrieve distances from distance lists and convert to float
             if current_truck_location < address_index:
-                distance = distance_lists[address_index][current_truck_location]
-
-            # Convert distance to float
-            distance = float(distance)
+                distance = float(distance_lists[address_index][current_truck_location])
 
             # If current distance is less than the minimum distance, replace minimum distance with current distance
             if distance < min_distance:
                 min_distance = distance
                 min_package = package
 
-        # If
+        # If current distance less than minimum distance, replace minimum distance with current distance
         if min_package:
             # Set status of package to en route
             min_package.status = 'En Route'
@@ -172,30 +169,32 @@ truck2_total_distance = round(total_distance_truck2, 2)
 # Calculates total distance traveled by both trucks
 total_distance_both = truck1_total_distance + truck2_total_distance
 
+print(running_time_truck1)
+print(running_time_truck2)
+
 
 # -- PRINTING PACKAGE STATUS -- #
 
-def print_package_info(package_id, specified_time):
+def package_info(package_id, specified_time, specified_date):
     # Search for package ID
     selected_package = package_hash_table.search(package_id)
 
-    # Check if package exists:
+    # Check if package exists
     if selected_package:
-        print('                                  ')
+        print('\n')
         print(f"Package ID: {selected_package.id}")
 
         # Check the status of the package at the specified time
-        if selected_package.delivery_time == specified_time:
-            print(f"Status at specified time: Delivered")
+        if selected_package.delivery_time:
 
-            # Print delivery time only if status is 'delivered'
-            print(f"Delivery Time: {selected_package.delivery_time}")
+            comparison_result = specified_time >= selected_package.delivery_time
 
+            if comparison_result:
+                print(f"Status at {specified_time}: Delivered")
+                print(f"Delivery Time: {selected_package.delivery_time}\n")
+            else:
+                print(f"Status at {specified_time}: Not yet delivered\n")
         else:
-            print(f"Status at specified time: {selected_package.status}")
-
-        print('                                  ')
-
+            print(f"Status at {specified_time}: Not yet delivered\n")
     else:
-        print("Package not found.")
-
+        print("Package not found.\n")

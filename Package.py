@@ -1,3 +1,5 @@
+import datetime
+
 # class for packages
 # Overall space and time complexity O(1)
 
@@ -14,8 +16,8 @@ class Package:
         self.deadline = deadline
         self.weight = weight
         self.truck_id = truck_id
-        self.loading_time = loading_time
-        self.delivery_time = delivery_time
+        self.loading_time = datetime.timedelta()
+        self.delivery_time = datetime.timedelta()
         self.status = status
 
     # for printing
