@@ -72,26 +72,33 @@ def ui():
                            '2) Print all package status\n'
                            '3) Quit\n')
 
+            # If the user chooses to print package status
             if choice == '1':
                 selected_package_id = int(input('Enter package ID between 1 and 40: \n'))
 
+                # If the user enters package address not in trucks program will exit
                 if selected_package_id not in range(1, 41):
                     print('Invalid package ID entered. Try again.')
                     break
 
                 else:
 
-                    # Assuming specified_date is the same date as the truck loading times
+                    # Sets specified_date to the same date as the truck loading times
                     specified_date = datetime.datetime(2024, 1, 31).date()
 
+                    # Prompts user to enter hour
                     hour_value = int(input("Please enter an hour value that's between 0 and 23:\n "))
 
+                    # If user enters invalid hour program will exit
                     if not 0 <= hour_value <= 23:
                         print('Invalid hour value entered. Try again.')
                         break
 
+                    # Prompts user to enter minutes
                     else:
                         minute_value = int(input("Please enter a minute value that's between 0 and 59:\n "))
+
+                        # If user enters invalid minute program will exit
                         if not 0 <= minute_value <= 59:
                             print('Invalid minute value. Try again.')
                             break
