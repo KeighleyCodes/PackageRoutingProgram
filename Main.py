@@ -12,7 +12,7 @@ from Loading import total_distance_both, truck1_total_distance, truck2_total_dis
 # package status for individual packages and all packages at a certain user-chosen time, and to print the final delivery
 # times of each individual truck.
 def ui():
-    print('                                                               ')
+    print('\n')
     print('      ########  #####  #######   ##########   #######   ######')
     print('        ###    #####    ####   #############   ####       ###')
     print('        ###   ######   ####  #####      ####   ####       ###')
@@ -20,10 +20,8 @@ def ui():
     print('        ###  ##   ##  ###    ####     ######   ####       ###')
     print('        ### ##    ## ###     ####       ####   ####       ###')
     print('        #####     #####       #############     ############')
-    print('        ####      ####          #########         #######')
-    print('                                                             ')
-    print('    * ------  P A R C E L  ------  S E R V I C E  ----------* ')
-    print('                                                                ')
+    print('        ####      ####          #########         #######\n')
+    print('    * ------  P A R C E L  ------  S E R V I C E  ----------* \n')
 
     # Prompts user to choose between printing truck mileage, package status, delivery time, or close the program
     # The user's choice is used to continue to the next prompt
