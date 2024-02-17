@@ -5,7 +5,7 @@
 import datetime
 
 from Loading import total_distance_both, truck1_total_distance, truck2_total_distance, package_hash_table, \
-    running_time_truck1, running_time_truck2, package_info
+    running_time_truck1, running_time_truck2, individual_package_info, all_package_info
 
 
 # Provides a user interface where options are presented to print truck mileage by individual truck, for both trucks, p
@@ -26,7 +26,7 @@ def ui():
     # Prompts user to choose between printing truck mileage, package status, delivery time, or close the program
     # The user's choice is used to continue to the next prompt
     while True:
-        choice = input('Welcome to WGUPS. Please choose an option:\n'
+        choice = input('\nWelcome to WGUPS. Please choose an option:\n'
                        '1) Print all package info\n'
                        '2) Print truck mileage\n'
                        '3) Print package status\n'
@@ -108,11 +108,34 @@ def ui():
                             specified_time = datetime.datetime(2024, 1, 31, hour_value, minute_value)
 
                             # Print package info at specified time
-                            print(package_info(selected_package_id, specified_time, specified_date))
+                            print(individual_package_info(selected_package_id, specified_time, specified_date))
 
             if choice == '2':
-                print("Put something here")
-                # ADD LOGIC TO PRINT ALL PACKAGES COMPARED TO TIME
+                # Sets specified_date to the same date as the truck loading times
+                specified_date = datetime.datetime(2024, 1, 31).date()
+
+                # Prompts user to enter hour
+                hour_value = int(input("Please enter an hour value that's between 0 and 23:\n "))
+
+                # If user enters invalid hour program will exit
+                if not 0 <= hour_value <= 23:
+                    print('Invalid hour value entered. Try again.')
+                    break
+
+                # Prompts user to enter minutes
+                else:
+                    minute_value = int(input("Please enter a minute value that's between 0 and 59:\n "))
+
+                    # If user enters invalid minute program will exit
+                    if not 0 <= minute_value <= 59:
+                        print('Invalid minute value. Try again.')
+                        break
+
+                    else:
+                        # Create specified_time as a datetime object
+                        specified_time = datetime.datetime(2024, 1, 31, hour_value, minute_value)
+
+                        (all_package_info(specified_time, specified_date))
 
             # If the user chooses to exit the program a message is printed and the program exits
             elif choice == '3':

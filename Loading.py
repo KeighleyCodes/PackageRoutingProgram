@@ -1,6 +1,7 @@
 # load package data into hash table
 import csv
 
+
 from Package import Package
 from HashTable import HashTable
 from datetime import datetime, timedelta
@@ -175,7 +176,11 @@ print(running_time_truck2)
 
 # -- PRINTING PACKAGE STATUS -- #
 
-def package_info(package_id, specified_time, specified_date):
+# Function to search for each package by package ID at any time specified by the user
+# Space complexity O(1)
+# Time complexity O(1) because there will be no collisions in the buckets with the small amount of data & chaining
+# hashtable
+def individual_package_info(package_id, specified_time, specified_date):
     # Search for package ID
     selected_package = package_hash_table.search(package_id)
 
@@ -215,3 +220,74 @@ def package_info(package_id, specified_time, specified_date):
             print(f"Status at {specified_time}: Not yet delivered\n")
     else:
         print("Package not found.\n")
+
+
+# Function to print all package info including address, delivery status and delivery time if applicable
+# Has a special case for package 9 to update its address after 10:20
+# Space complexity O(1)
+# Time complexity O(1) because there will be no collisions in the buckets with the small amount of data & chaining
+# hashtable
+def all_package_info(specified_time, specified_date):
+    package_id = 1
+    package_found = False  # Flag to check if any package is found
+    print("All Package Information:")
+    while True:
+        # Retrieve the package from the hashtable
+        selected_package = package_hash_table.search(package_id)
+
+        # Check if package exists
+        if selected_package:
+            package_found = True  # Set flag to True since package is found
+
+            # Check if package ID is 9
+            if selected_package.id == 9:
+
+                # Check if specified time is after 10:20
+                if specified_time >= datetime(specified_date.year, specified_date.month, specified_date.day, 10, 20):
+                    selected_package.address = '410 S. State St.'
+                    selected_package.delivery_time = specified_time
+
+                    # Print package information (code duplication to make printing correct)
+                    print(f"\nPackage ID: {selected_package.id}")
+                    print(f"Address: {selected_package.address}")
+                    print(f"City: {selected_package.city}")
+                    print(f"State: {selected_package.state}")
+                    print(f"Zip Code: {selected_package.zip_code}")
+                    print(f"Delivery Time: {selected_package.delivery_time}") # -- FIX ME - CHOOSE DELIVERY TIME
+                    print(f"Status at {specified_time}: Delivered")
+                else:
+
+                    # Print package information (code duplication to make printing correct)
+                    print(f"\nPackage ID: {selected_package.id}")
+                    print(f"Address: {selected_package.address}")
+                    print(f"City: {selected_package.city}")
+                    print(f"State: {selected_package.state}")
+                    print(f"Zip Code: {selected_package.zip_code}")
+                    print(f"Status at {specified_time}: Not yet delivered")
+
+            # Case for all other packages
+            if selected_package.id != 9:
+
+                # Print package information (code duplication to make printing correct)
+                print(f"\nPackage ID: {selected_package.id}")
+                print(f"Address: {selected_package.address}")
+                print(f"City: {selected_package.city}")
+                print(f"State: {selected_package.state}")
+                print(f"Zip Code: {selected_package.zip_code}")
+
+                comparison_result = specified_time >= selected_package.delivery_time
+                if comparison_result:
+                    print(f"Status at {specified_time}: Delivered")
+                    print(f"Delivery Time: {selected_package.delivery_time}")
+                else:
+                    print(f"Status at {specified_time}: Not yet delivered")
+
+        else:
+            # If no package is found and the loop has iterated over all package IDs, break the loop
+            if package_found:
+                break
+            else:
+                print("Package not found.")
+
+        # Move to the next package ID
+        package_id += 1
