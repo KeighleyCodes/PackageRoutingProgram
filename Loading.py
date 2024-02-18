@@ -187,12 +187,11 @@ def individual_package_info(package_id, specified_time, specified_date):
 
         # Check the status of the package at the specified time
         if selected_package.delivery_time:
-            print(f"Specified Time: {specified_time}")
 
             # Special case for package ID 9
             if selected_package.id == 9:
                 if specified_time < datetime(specified_date.year, specified_date.month, specified_date.day, 10, 20):
-                    print(f"Status at {specified_time}: Not yet delivered")
+                    print(f"Status at {specified_time}: En Route")
                     print(f"Address: {selected_package.address}\n")
                     return
 
@@ -201,7 +200,6 @@ def individual_package_info(package_id, specified_time, specified_date):
                     selected_package.delivery_time = specified_time
                     print(f"Status at {specified_time}: Delivered")
                     print(f"Delivery Time: {selected_package.delivery_time}")
-                    print(f"Address: {selected_package.address}\n")
                     return
 
             # Regular case for other packages
@@ -215,7 +213,7 @@ def individual_package_info(package_id, specified_time, specified_date):
             print(f"Status at {specified_time}: {selected_package.status}")
             print(f"Delivery Time: {selected_package.delivery_time}\n")
         else:
-            print(f"Status at {specified_time}: Not yet delivered\n")
+            print(f"Status at {specified_time}: En Route\n")
     else:
         print("Package not found.\n")
 

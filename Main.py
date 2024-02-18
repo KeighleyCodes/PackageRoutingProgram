@@ -77,7 +77,7 @@ def ui():
                             specified_time = datetime.datetime(2024, 1, 31, hour_value, minute_value)
 
                             # Print package info at specified time
-                            print(individual_package_info(selected_package_id, specified_time, specified_date))
+                            (individual_package_info(selected_package_id, specified_time, specified_date))
 
             # Prints all package status
             if choice == '2':
