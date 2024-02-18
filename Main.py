@@ -21,52 +21,21 @@ def ui():
     print('        ### ##    ## ###     ####       ####   ####       ###')
     print('        #####     #####       #############     ############')
     print('        ####      ####          #########         #######\n')
-    print('    * ------  P A R C E L  ------  S E R V I C E  ----------* \n')
+    print('    * ------  P A R C E L  ------  S E R V I C E  ----------*')
 
     # Prompts user to choose between printing truck mileage, package status, delivery time, or close the program
     # The user's choice is used to continue to the next prompt
     while True:
         choice = input('\nWelcome to WGUPS. Please choose an option:\n'
-                       '1) Print all package info\n'
+                       '1) Print package status\n'
                        '2) Print truck mileage\n'
-                       '3) Print package status\n'
-                       '4) Print truck delivery time\n'
-                       '5) Quit\n')
-
-        if choice == '1':
-            print(package_hash_table)
-
-        # If user chooses to print truck mileage another list of choices is presented to print the total truck mileage,
-        # truck mileage for each individual truck or to quit the program
-        # The user's choice is used to continue to the next prompt
-        if choice == '2':
-            choice = input('Please choose an option:\n'
-                           '1) Print total truck mileage\n'
-                           '2) Print Truck 1 total mileage\n'
-                           '3) Print Truck 2 total mileage\n'
-                           '4) Quit\n')
-
-            # If the user chooses to print total mileage of both trucks it is printed
-            if choice == '1':
-                print("Total distances both trucks:", total_distance_both)
-
-            # If the user chooses to print milage for Truck 1 it is printed
-            if choice == '2':
-                print("Truck 1 total distance:", truck1_total_distance)
-
-            # If the user chooses to print milage for Truck 2 it is printed
-            if choice == '3':
-                print("Truck 2 total distance:", truck2_total_distance)
-
-            # If the user chooses to exit the program a message is printed and the program exits
-            elif choice == '4':
-                print('Exiting program...')
-                break
+                       '3) Print truck delivery time\n'
+                       '4) Quit\n')
 
         # If the user chooses to print package status another prompt is presented to choose to print all package status,
         # package status by individual package, or quit the program
         # The user's choice is used to continue to the next prompt
-        elif choice == '3':
+        if choice == '1':
             choice = input('Please choose an option:\n'
                            '1) Print package status by package ID\n'
                            '2) Print all package status\n'
@@ -110,6 +79,7 @@ def ui():
                             # Print package info at specified time
                             print(individual_package_info(selected_package_id, specified_time, specified_date))
 
+            # Prints all package status
             if choice == '2':
                 # Sets specified_date to the same date as the truck loading times
                 specified_date = datetime.datetime(2024, 1, 31).date()
@@ -136,15 +106,42 @@ def ui():
                         specified_time = datetime.datetime(2024, 1, 31, hour_value, minute_value)
 
                         (all_package_info(specified_time, specified_date))
+                continue
+
+            if choice == '3':
+                print('Exiting program...')
+                break
+
+        # If user chooses to print truck mileage another list of choices is presented to print the total truck mileage,
+        # truck mileage for each individual truck or to quit the program
+        # The user's choice is used to continue to the next prompt
+        if choice == '2':
+            choice = input('Please choose an option:\n'
+                           '1) Print total truck mileage\n'
+                           '2) Print Truck 1 total mileage\n'
+                           '3) Print Truck 2 total mileage\n'
+                           '4) Quit\n')
+
+            # If the user chooses to print total mileage of both trucks it is printed
+            if choice == '1':
+                print("Total mileage for both trucks:", total_distance_both)
+
+            # If the user chooses to print milage for Truck 1 it is printed
+            if choice == '2':
+                print("Truck 1 total mileage:", truck1_total_distance)
+
+            # If the user chooses to print milage for Truck 2 it is printed
+            if choice == '3':
+                print("Truck 2 total mileage:", truck2_total_distance)
 
             # If the user chooses to exit the program a message is printed and the program exits
-            elif choice == '3':
+            elif choice == '4':
                 print('Exiting program...')
                 break
 
         # If the user chooses to print truck delivery times another prompt is presented
         # The user's choice is used to continue to the next prompt
-        if choice == '4':
+        elif choice == '3':
             choice = input('Please choose an option:\n'
                            '1) Print Truck 1 last delivery time\n'
                            '2) Print Truck 2 last delivery time\n'
@@ -164,7 +161,7 @@ def ui():
                 break
 
         # If the user chooses to exit the program a message is printed and the program exits
-        elif choice == '5':
+        elif choice == '4':
             print('Exiting program...')
             break
 

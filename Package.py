@@ -1,5 +1,6 @@
 import datetime
 
+
 # class for packages
 # Overall space and time complexity O(1)
 
@@ -31,6 +32,3 @@ class Package:
         return "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s" % (self.id, self.address, self.city, self.state, self.zip_code,
                                                      self.deadline, self.weight, self.truck_id, self.loading_time,
                                                      self.delivery_time, self.status)
-
-
-

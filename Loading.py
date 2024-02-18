@@ -1,7 +1,6 @@
 # load package data into hash table
 import csv
 
-
 from Package import Package
 from HashTable import HashTable
 from datetime import datetime, timedelta
@@ -129,14 +128,17 @@ def package_delivery(truck_packages, start_time):
             # Define average truck speed
             truck_speed = 18
 
-            # Calculate trip duration
-            trip_duration = distance / truck_speed
+            # Calculate trip duration in minutes (convert hours to minutes)
+            trip_duration = (min_distance / truck_speed) * 60
+            print('Trip Duration: ', trip_duration)
 
             # Add minutes to running time
             running_time += timedelta(minutes=trip_duration)
+            print('Running time: ', running_time)
 
             # Add distance to total distance
             total_distance += min_distance
+            print('Total distance: ', total_distance)
 
             # Timestamp package with delivery time
             min_package.delivery_time = running_time
@@ -146,6 +148,7 @@ def package_delivery(truck_packages, start_time):
 
             # Remove package from truck
             truck_packages.remove(min_package.id)
+            print(min_package.id)
 
             # Set status of package to delivered
             min_package.status = 'Delivered'
@@ -155,23 +158,16 @@ def package_delivery(truck_packages, start_time):
 
 # -- TOTAL DISTANCE CALCULATIONS -- #
 
-# Calculates total distance traveled by truck 1
+# Call package_delivery function and store return values
 total_distance_truck1, running_time_truck1 = package_delivery(truck1_packages, truck1_loading)
-
-# Rounds total distance to two places after the decimal
-truck1_total_distance = round(total_distance_truck1, 2)
-
-# Calculates total distance traveled by truck 2
 total_distance_truck2, running_time_truck2 = package_delivery(truck2_packages, truck2_loading)
 
-# Rounds total distance to two places after the decimal
+# Rounds total distances to two places after the decimal
+truck1_total_distance = round(total_distance_truck1, 2)
 truck2_total_distance = round(total_distance_truck2, 2)
 
 # Calculates total distance traveled by both trucks
 total_distance_both = truck1_total_distance + truck2_total_distance
-
-print(running_time_truck1)
-print(running_time_truck2)
 
 
 # -- PRINTING PACKAGE STATUS -- #
@@ -212,10 +208,12 @@ def individual_package_info(package_id, specified_time, specified_date):
             comparison_result = specified_time >= selected_package.delivery_time
 
             if comparison_result:
-                print(f"Status at {specified_time}: Delivered")
-                print(f"Delivery Time: {selected_package.delivery_time}\n")
+                selected_package.status = 'Delivered'
             else:
-                print(f"Status at {specified_time}: Not yet delivered\n")
+                selected_package.status = 'En Route'
+
+            print(f"Status at {specified_time}: {selected_package.status}")
+            print(f"Delivery Time: {selected_package.delivery_time}\n")
         else:
             print(f"Status at {specified_time}: Not yet delivered\n")
     else:
@@ -241,46 +239,25 @@ def all_package_info(specified_time, specified_date):
 
             # Check if package ID is 9
             if selected_package.id == 9:
-
                 # Check if specified time is after 10:20
                 if specified_time >= datetime(specified_date.year, specified_date.month, specified_date.day, 10, 20):
                     selected_package.address = '410 S. State St.'
                     selected_package.delivery_time = specified_time
-
-                    # Print package information (code duplication to make printing correct)
-                    print(f"\nPackage ID: {selected_package.id}")
-                    print(f"Address: {selected_package.address}")
-                    print(f"City: {selected_package.city}")
-                    print(f"State: {selected_package.state}")
-                    print(f"Zip Code: {selected_package.zip_code}")
-                    print(f"Delivery Time: {selected_package.delivery_time}") # -- FIX ME - CHOOSE DELIVERY TIME
-                    print(f"Status at {specified_time}: Delivered")
+                    selected_package.status = 'Delivered'  # Manually set status
                 else:
+                    selected_package.status = 'Not yet delivered'  # Manually set status
 
-                    # Print package information (code duplication to make printing correct)
-                    print(f"\nPackage ID: {selected_package.id}")
-                    print(f"Address: {selected_package.address}")
-                    print(f"City: {selected_package.city}")
-                    print(f"State: {selected_package.state}")
-                    print(f"Zip Code: {selected_package.zip_code}")
-                    print(f"Status at {specified_time}: Not yet delivered")
-
-            # Case for all other packages
-            if selected_package.id != 9:
-
-                # Print package information (code duplication to make printing correct)
-                print(f"\nPackage ID: {selected_package.id}")
-                print(f"Address: {selected_package.address}")
-                print(f"City: {selected_package.city}")
-                print(f"State: {selected_package.state}")
-                print(f"Zip Code: {selected_package.zip_code}")
-
-                comparison_result = specified_time >= selected_package.delivery_time
-                if comparison_result:
-                    print(f"Status at {specified_time}: Delivered")
-                    print(f"Delivery Time: {selected_package.delivery_time}")
+            # For all other packages
+            else:
+                # Check if the package has a delivery time
+                if selected_package.delivery_time:
+                    comparison_result = specified_time >= selected_package.delivery_time
+                    if comparison_result:
+                        selected_package.status = 'Delivered'
+                    else:
+                        selected_package.status = 'En Route'
                 else:
-                    print(f"Status at {specified_time}: Not yet delivered")
+                    selected_package.status = 'Not yet delivered'  # Manually set status
 
         else:
             # If no package is found and the loop has iterated over all package IDs, break the loop
@@ -289,5 +266,14 @@ def all_package_info(specified_time, specified_date):
             else:
                 print("Package not found.")
 
+        # Print package information
+        print(f"\nPackage ID: {selected_package.id}")
+        print(f"Address: {selected_package.address}")
+        print(f"City: {selected_package.city}")
+        print(f"State: {selected_package.state}")
+        print(f"Zip Code: {selected_package.zip_code}")
+        print(f"Status at {specified_time}: {selected_package.status}")
+
         # Move to the next package ID
         package_id += 1
+

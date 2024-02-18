@@ -1,4 +1,4 @@
-# Create HashTable class
+# Creates HashTable class
 # Citing source: WGU W-1_ChainingHashTable_zyBooks_Key-Value.py
 # Overall space and time complexity 0(n)
 class HashTable:
