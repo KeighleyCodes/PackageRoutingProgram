@@ -1,6 +1,7 @@
 # Creates HashTable class
 # Citing source: WGU W-1_ChainingHashTable_zyBooks_Key-Value.py
-# Overall space and time complexity 0(n)
+# Space complexity O(n)
+# Time complexity O(1)
 class HashTable:
     # Constructor with optional initial capacity parameter.
     # Assigns all buckets with an empty list.

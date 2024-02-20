@@ -83,7 +83,7 @@ truck2_loading = datetime(2024, 1, 31, 9, 5)
 # This is a nearest-neighbor algorithm. ## -- ADD MORE INFO HERE! -------------------
 # Space complexity 0(1)
 # Time complexity O(n^2), where n is the number of packages
-def package_delivery(truck_packages, start_time):
+def package_delivery(truck_packages, start_time, truck_number):
     # Current truck location initialization
     current_truck_location = 0  # Index of hub
 
@@ -122,6 +122,10 @@ def package_delivery(truck_packages, start_time):
 
         # If current distance less than minimum distance, replace minimum distance with current distance
         if min_package:
+
+            # Assign truck id to each package
+            min_package.truck_id = truck_number
+
             # Set status of package to en route
             min_package.status = 'En Route'
 
@@ -130,15 +134,12 @@ def package_delivery(truck_packages, start_time):
 
             # Calculate trip duration in minutes (convert hours to minutes)
             trip_duration = (min_distance / truck_speed) * 60
-            print('Trip Duration: ', trip_duration)
 
             # Add minutes to running time
             running_time += timedelta(minutes=trip_duration)
-            print('Running time: ', running_time)
 
             # Add distance to total distance
             total_distance += min_distance
-            print('Total distance: ', total_distance)
 
             # Timestamp package with delivery time
             min_package.delivery_time = running_time
@@ -148,7 +149,6 @@ def package_delivery(truck_packages, start_time):
 
             # Remove package from truck
             truck_packages.remove(min_package.id)
-            print(min_package.id)
 
             # Set status of package to delivered
             min_package.status = 'Delivered'
@@ -159,8 +159,8 @@ def package_delivery(truck_packages, start_time):
 # -- TOTAL DISTANCE CALCULATIONS -- #
 
 # Call package_delivery function and store return values
-total_distance_truck1, running_time_truck1 = package_delivery(truck1_packages, truck1_loading)
-total_distance_truck2, running_time_truck2 = package_delivery(truck2_packages, truck2_loading)
+total_distance_truck1, running_time_truck1 = package_delivery(truck1_packages, truck1_loading, 1)
+total_distance_truck2, running_time_truck2 = package_delivery(truck2_packages, truck2_loading, 2)
 
 # Rounds total distances to two places after the decimal
 truck1_total_distance = round(total_distance_truck1, 2)
@@ -192,7 +192,7 @@ def individual_package_info(package_id, specified_time, specified_date):
             if selected_package.id == 9:
                 if specified_time < datetime(specified_date.year, specified_date.month, specified_date.day, 10, 20):
                     print(f"Status at {specified_time}: En Route")
-                    print(f"Address: {selected_package.address}\n")
+                    print(f'Truck ID: {selected_package.truck_id}')
                     return
 
                 else:
@@ -200,6 +200,7 @@ def individual_package_info(package_id, specified_time, specified_date):
                     selected_package.delivery_time = specified_time
                     print(f"Status at {specified_time}: Delivered")
                     print(f"Delivery Time: {selected_package.delivery_time}")
+                    print(f'Truck ID: {selected_package.truck_id}')
                     return
 
             # Regular case for other packages
@@ -211,9 +212,11 @@ def individual_package_info(package_id, specified_time, specified_date):
                 selected_package.status = 'En Route'
 
             print(f"Status at {specified_time}: {selected_package.status}")
-            print(f"Delivery Time: {selected_package.delivery_time}\n")
+            print(f"Delivery Time: {selected_package.delivery_time}")
+            print(f'Truck ID: {selected_package.truck_id}')
         else:
-            print(f"Status at {specified_time}: En Route\n")
+            print(f"Status at {specified_time}: En Route")
+            print(f'Truck ID: {selected_package.truck_id}')
     else:
         print("Package not found.\n")
 
@@ -271,6 +274,11 @@ def all_package_info(specified_time, specified_date):
         print(f"State: {selected_package.state}")
         print(f"Zip Code: {selected_package.zip_code}")
         print(f"Status at {specified_time}: {selected_package.status}")
+        print(f'Truck ID: {selected_package.truck_id}')
+
+        # Prints delivery time if the package is delivered
+        if selected_package.status == 'Delivered':
+            print(f'Delivery time: {selected_package.delivery_time}')
 
         # Move to the next package ID
         package_id += 1

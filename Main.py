@@ -106,7 +106,7 @@ def ui():
                         specified_time = datetime.datetime(2024, 1, 31, hour_value, minute_value)
 
                         (all_package_info(specified_time, specified_date))
-                continue
+                    continue
 
             if choice == '3':
                 print('Exiting program...')
