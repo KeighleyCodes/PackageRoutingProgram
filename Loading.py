@@ -187,7 +187,6 @@ def individual_package_info(package_id, specified_time, specified_date):
 
         # Check the status of the package at the specified time
         if selected_package.delivery_time:
-            print(f"Specified Time: {specified_time}")
 
             # Special case for package ID 9
             if selected_package.id == 9:
@@ -198,7 +197,8 @@ def individual_package_info(package_id, specified_time, specified_date):
 
                 else:
                     selected_package.address = '410 S. State St., Salt Lake City, UT 84111'
-                    selected_package.delivery_time = specified_time
+                    selected_package.delivery_time = datetime(specified_date.year, specified_date.month,
+                                                              specified_date.day, 11, 36)
                     print(f"Status at {specified_time}: Delivered")
                     print(f"Delivery Time: {selected_package.delivery_time}")
                     print(f"Address: {selected_package.address}\n")
@@ -242,7 +242,8 @@ def all_package_info(specified_time, specified_date):
                 # Check if specified time is after 10:20
                 if specified_time >= datetime(specified_date.year, specified_date.month, specified_date.day, 10, 20):
                     selected_package.address = '410 S. State St.'
-                    selected_package.delivery_time = specified_time
+                    selected_package.delivery_time = datetime(specified_date.year, specified_date.month,
+                                                              specified_date.day, 11,36)
                     selected_package.status = 'Delivered'  # Manually set status
                 else:
                     selected_package.status = 'Not yet delivered'  # Manually set status
