@@ -264,8 +264,7 @@ def all_package_info(specified_time, specified_date):
 
             # Print package information
             print(f"\nPackage ID: {selected_package.id}")
-            print(f"Address: {selected_package.address}")
-            print(f"City: {selected_package.city}")
+            print(f"Address: {selected_package.address}, {selected_package.city}")
             print(f"Zip Code: {selected_package.zip_code}")
             print(f"Weight: {selected_package.weight}")
             print(f"Deadline: {selected_package.deadline}")
