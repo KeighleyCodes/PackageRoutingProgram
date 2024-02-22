@@ -32,7 +32,8 @@ def ui():
                        '3) Print truck delivery time\n'
                        '4) Quit\n')
 
-        # If the user chooses to print package status another prompt is presented to choose to print all package status,
+        # If the user chooses to print package status another prompt is presented to choose to print all package status
+
         # package status by individual package, or quit the program
         # The user's choice is used to continue to the next prompt
         if choice == '1':
