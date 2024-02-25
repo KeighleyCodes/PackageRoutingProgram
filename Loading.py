@@ -184,7 +184,7 @@ total_distance_both = truck1_total_distance + truck2_total_distance
 # Space complexity O(1)
 # Time complexity O(1) because there will be no collisions in the buckets with the small amount of data & chaining
 # hashtable
-from datetime import datetime, time
+
 
 def individual_package_info(package_id, specified_time, specified_date):
     # Search for package ID
@@ -197,7 +197,7 @@ def individual_package_info(package_id, specified_time, specified_date):
         if selected_package.delivery_time:
 
             # Special case for package ID 9
-            if selected_package.id == 9 and specified_time >= selected_package.delivery_time:
+            if selected_package.id == 9 and specified_time >= datetime(2024, 1, 31, 10, 20):
                 selected_package.address = '410 S. State St.'
 
         else:
@@ -243,28 +243,24 @@ def all_package_info(specified_time, specified_date):
         if selected_package:
             package_found = True  # Set flag to True since package is found
 
+            # Special case for package ID 9
+            if selected_package.id == 9 and specified_time >= datetime(2024, 1, 31, 10, 20):
+                selected_package.address = '410 S. State St.'
+
             # Check the status of the package at the specified time
             if selected_package.delivery_time:
-
-                # Special case for package ID 9
-                if selected_package.id == 9 and specified_time >= selected_package.delivery_time:
-                    selected_package.address = '410 S. State St.'
-
-                # Regular case for other packages
+                comparison_result = specified_time >= selected_package.delivery_time
+                if comparison_result:
+                    selected_package.status = 'Delivered'
                 else:
-                    comparison_result = specified_time >= selected_package.delivery_time
-
-                    if comparison_result:
-                        selected_package.status = 'Delivered'
-                    else:
-                        selected_package.status = 'En Route'
-
+                    selected_package.status = 'En Route'
             else:
                 selected_package.status = 'Not yet delivered'
 
             # Print package information
             print(f"\nPackage ID: {selected_package.id}")
-            print(f"Address: {selected_package.address}, {selected_package.city}")
+            print(f"Address: {selected_package.address}")
+            print(f"City: {selected_package.city}")
             print(f"Zip Code: {selected_package.zip_code}")
             print(f"Weight: {selected_package.weight}")
             print(f"Deadline: {selected_package.deadline}")
