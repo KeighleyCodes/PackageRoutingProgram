@@ -4,8 +4,9 @@
 
 import datetime
 
-from Loading import total_distance_both, truck1_total_distance, truck2_total_distance, package_hash_table, \
-    running_time_truck1, running_time_truck2, individual_package_info, all_package_info
+from Loading import truck1_total_distance, truck2_total_distance, package_hash_table, \
+    running_time_truck1, running_time_truck2, individual_package_info, all_package_info, truck3_total_distance, \
+    total_distance_all
 
 
 # Provides a user interface where options are presented to print truck mileage by individual truck, for both trucks, p
@@ -118,25 +119,29 @@ def ui():
         # The user's choice is used to continue to the next prompt
         if choice == '2':
             choice = input('Please choose an option:\n'
-                           '1) Print total truck mileage\n'
-                           '2) Print Truck 1 total mileage\n'
-                           '3) Print Truck 2 total mileage\n'
-                           '4) Quit\n')
+                           '1) Print Truck 1 total mileage\n'
+                           '2) Print Truck 2 total mileage\n'
+                           '3) Print Truck 3 total mileage\n'
+                           '4) Print total truck mileage\n'
+                           '5) Quit\n')
 
             # If the user chooses to print total mileage of both trucks it is printed
             if choice == '1':
-                print("Total mileage for both trucks:", total_distance_both)
+                print("Truck 1 total mileage:", truck1_total_distance)
 
             # If the user chooses to print milage for Truck 1 it is printed
             if choice == '2':
-                print("Truck 1 total mileage:", truck1_total_distance)
+                print("Truck 2 total mileage:", truck2_total_distance)
 
             # If the user chooses to print milage for Truck 2 it is printed
             if choice == '3':
-                print("Truck 2 total mileage:", truck2_total_distance)
+                print("Truck 3 total mileage", truck3_total_distance)
+
+            if choice == '4':
+                print("Total mileage for all trucks:", total_distance_all)
 
             # If the user chooses to exit the program a message is printed and the program exits
-            elif choice == '4':
+            elif choice == '5':
                 print('Exiting program...')
                 break
 

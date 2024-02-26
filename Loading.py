@@ -70,8 +70,9 @@ with open(r"CSV_Files/DistanceTable.csv", newline='') as distanceFile:
 
 # Creates a list for each truck, manually loads packages
 # Space and time complexity O(1)
-truck1_packages = [1, 2, 4, 6, 7, 12, 13, 17, 22, 24, 25, 26, 27, 29, 31, 32, 33, 35, 39, 40]
-truck2_packages = [3, 5, 8, 9, 10, 11, 14, 15, 16, 18, 19, 20, 21, 23, 28, 30, 34, 36, 37, 38]
+truck1_packages = [1, 14, 15, 24, 26, 29, 30, 31, 34, 37, 38, 39, 40]
+truck2_packages = [3, 6, 13, 16, 18, 20, 25, 27, 28, 32, 33, 35, 36]
+truck3_packages = [2, 4, 5, 7, 8, 9, 10, 11, 12, 17, 19, 21, 22, 23]
 
 # Assign truck ID to each package
 for package_id in truck1_packages:
@@ -84,10 +85,16 @@ for package_id in truck2_packages:
     if package_object:
         package_object.truck_id = 2
 
+for package_id in truck3_packages:
+    package_object = package_hash_table.search(package_id)
+    if package_object:
+        package_object.truck_id = 3
+
 
 # Sets truck loading times
 truck1_loading = datetime(2024, 1, 31, 8, 0)
 truck2_loading = datetime(2024, 1, 31, 9, 5)
+truck3_loading = datetime(2024, 1, 31, 10, 30)
 
 
 # -- TRUCK DELIVERY -- #
@@ -124,8 +131,11 @@ def package_delivery(truck_packages, start_time):
             address_index = address_dictionary.get(package.address)
 
             # Retrieve distances from distance lists and convert to float
-            if current_truck_location < address_index:
+            if current_truck_location <= address_index:
                 distance = float(distance_lists[address_index][current_truck_location])
+
+            else:
+                distance = float(distance_lists[current_truck_location][address_index])
 
             # If current distance is less than the minimum distance, replace minimum distance with current distance
             if distance < min_distance:
@@ -169,13 +179,16 @@ def package_delivery(truck_packages, start_time):
 # Call package_delivery function and store return values
 total_distance_truck1, running_time_truck1 = package_delivery(truck1_packages, truck1_loading)
 total_distance_truck2, running_time_truck2 = package_delivery(truck2_packages, truck2_loading)
+total_distance_truck3, running_time_truck3 = package_delivery(truck3_packages, truck3_loading)
 
 # Rounds total distances to two places after the decimal
 truck1_total_distance = round(total_distance_truck1, 2)
 truck2_total_distance = round(total_distance_truck2, 2)
+truck3_total_distance = round(total_distance_truck3, 2)
 
 # Calculates total distance traveled by both trucks
-total_distance_both = truck1_total_distance + truck2_total_distance
+total_distance_all = truck1_total_distance + truck2_total_distance + truck3_total_distance
+print(total_distance_all)
 
 
 # -- PRINTING PACKAGE STATUS -- #
@@ -184,25 +197,37 @@ total_distance_both = truck1_total_distance + truck2_total_distance
 # Space complexity O(1)
 # Time complexity O(1) because there will be no collisions in the buckets with the small amount of data & chaining
 # hashtable
-
-
+# Function to search for each package by package ID at any time specified by the user
+# Space complexity O(1)
+# Time complexity O(1) because there will be no collisions in the buckets with the small amount of data & chaining
+# hashtable
 def individual_package_info(package_id, specified_time, specified_date):
     # Search for package ID
     selected_package = package_hash_table.search(package_id)
 
     # Check if package exists
     if selected_package:
+        # Check if the specified time is after 10:20
+        if specified_time >= datetime(2024, 1, 31, 10, 20):
+            # Special case for package ID 9: update address after 10:20
+            if selected_package.id == 9 and not selected_package.address_updated:
+                selected_package.address = '410 S. State St.'
+                selected_package.address_updated = True
+        else:
+            # If the specified time is before 10:20, revert to the original address
+            if selected_package.id == 9 and selected_package.address_updated:
+                selected_package.address = '300 State St.'
+                selected_package.address_updated = False
 
         # Check the status of the package at the specified time
         if selected_package.delivery_time:
-
-            # Special case for package ID 9
-            if selected_package.id == 9 and specified_time >= datetime(2024, 1, 31, 10, 20):
-                selected_package.address = '410 S. State St.'
-
+            comparison_result = specified_time >= selected_package.delivery_time
+            if comparison_result:
+                selected_package.status = 'Delivered'
+            else:
+                selected_package.status = 'En Route'
         else:
             selected_package.status = 'Not yet delivered'
-            print(f"Status at {specified_time}: {selected_package.status}")
 
         print(f"\nPackage ID: {selected_package.id}")
         print(f"Address: {selected_package.address}")
@@ -211,17 +236,12 @@ def individual_package_info(package_id, specified_time, specified_date):
         print(f"Weight: {selected_package.weight}")
         print(f"Deadline: {selected_package.deadline}")
         print(f'Truck ID: {selected_package.truck_id}')
+        print(f"Status at {specified_time}: {selected_package.status}")
 
-        # Regular case for other packages
-        comparison_result = specified_time >= selected_package.delivery_time
-
-        if comparison_result:
-            selected_package.status = 'Delivered'
-            print(f"Status at {specified_time}: {selected_package.status}")
+        # Print delivery time if the package is delivered
+        if selected_package.status == 'Delivered':
             print(f"Delivery Time: {selected_package.delivery_time}")
-        else:
-            selected_package.status = 'En Route'
-            print(f"Status at {specified_time}: {selected_package.status}")
+
     else:
         print("Package not found.")
 
@@ -243,9 +263,17 @@ def all_package_info(specified_time, specified_date):
         if selected_package:
             package_found = True  # Set flag to True since package is found
 
-            # Special case for package ID 9
-            if selected_package.id == 9 and specified_time >= datetime(2024, 1, 31, 10, 20):
-                selected_package.address = '410 S. State St.'
+            # Check if the specified time is after 10:20
+            if specified_time >= datetime(2024, 1, 31, 10, 20):
+                # Special case for package ID 9: update address after 10:20
+                if selected_package.id == 9 and not selected_package.address_updated:
+                    selected_package.address = '410 S. State St.'
+                    selected_package.address_updated = True
+            else:
+                # If the specified time is before 10:20 and the address has been updated, revert to the original address
+                if selected_package.id == 9 and selected_package.address_updated:
+                    selected_package.address = '300 State St.'
+                    selected_package.address_updated = False
 
             # Check the status of the package at the specified time
             if selected_package.delivery_time:
