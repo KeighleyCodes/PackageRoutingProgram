@@ -2,11 +2,11 @@
 # Student ID: 001321515
 # Class: WGU C950
 
-import datetime
+from datetime import timedelta, datetime
 
 from Loading import truck1_total_distance, truck2_total_distance, package_hash_table, \
     running_time_truck1, running_time_truck2, individual_package_info, all_package_info, truck3_total_distance, \
-    total_distance_all
+    total_distance_all, running_time_truck3
 
 
 # Provides a user interface where options are presented to print truck mileage by individual truck, for both trucks, p
@@ -53,9 +53,8 @@ def ui():
                     break
 
                 else:
-
                     # Sets specified_date to the same date as the truck loading times
-                    specified_date = datetime.datetime(2024, 1, 31).date()
+                    specified_date = datetime(2024, 1, 31).date()
 
                     # Prompts user to enter hour
                     hour_value = int(input("Please enter an hour value that's between 0 and 23:\n "))
@@ -76,7 +75,7 @@ def ui():
 
                         else:
                             # Create specified_time as a datetime object
-                            specified_time = datetime.datetime(2024, 1, 31, hour_value, minute_value)
+                            specified_time = timedelta(hours=hour_value, minutes=minute_value)
 
                             # Print package info at specified time
                             (individual_package_info(selected_package_id, specified_time, specified_date))
@@ -84,7 +83,7 @@ def ui():
             # Prints all package status
             if choice == '2':
                 # Sets specified_date to the same date as the truck loading times
-                specified_date = datetime.datetime(2024, 1, 31).date()
+                specified_date = datetime(2024, 1, 31).date()
 
                 # Prompts user to enter hour
                 hour_value = int(input("Please enter an hour value that's between 0 and 23:\n "))
@@ -105,7 +104,7 @@ def ui():
 
                     else:
                         # Create specified_time as a datetime object
-                        specified_time = datetime.datetime(2024, 1, 31, hour_value, minute_value)
+                        specified_time = timedelta(hours=hour_value, minutes=minute_value)
 
                         (all_package_info(specified_time, specified_date))
                     continue
@@ -151,7 +150,8 @@ def ui():
             choice = input('Please choose an option:\n'
                            '1) Print Truck 1 last delivery time\n'
                            '2) Print Truck 2 last delivery time\n'
-                           '3) Quit\n')
+                           '3) Print Truck 3 last delivery time\n'
+                           '4) Quit\n')
 
             # If the user chooses to print Truck 1 final running time it is printed
             if choice == '1':
@@ -161,8 +161,11 @@ def ui():
             if choice == '2':
                 print("Truck 2 final running time:", running_time_truck2)
 
+            if choice == '3':
+                print("Truck 3 final running time:", running_time_truck3)
+
             # If the user chooses to exit the program a message is printed and the program exits
-            elif choice == '3':
+            elif choice == '34':
                 print('Exiting program...')
                 break
 

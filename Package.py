@@ -18,8 +18,9 @@ class Package:
         self.truck_id = truck_id
         self.loading_time = datetime.timedelta()
         self.delivery_time = datetime.timedelta()
-        self.status = status
+        self.status = 'At hub'
         self.address_updated = False  # Initialize address_updated attribute to False
+        self.loaded = False  # Initialize loaded attribute to False
 
     # for printing
     # Space and time complexity O(1)

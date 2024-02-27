@@ -3,7 +3,7 @@ import csv
 
 from Package import Package
 from HashTable import HashTable
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 # Overall space and time complexity is O(n^2) due to the nested loops for
 # both the address and distance processing and the truck delivery algorithm.
@@ -30,7 +30,7 @@ with open(r"CSV_Files/PackageFile.csv") as packageFile:
         p_truck = None  # initial truck not set
         p_loading_time = None  # initial loading time not set
         p_delivery_time = None  # initial time not set
-        p_status = "Waiting"  # initial status set to waiting
+        p_status = "At hub"  # initial status set to waiting
 
         # Creates package object
         package_object = Package(p_id, p_address, p_city, p_state, p_zip, p_deadline, p_weight, p_truck, p_loading_time,
@@ -38,6 +38,7 @@ with open(r"CSV_Files/PackageFile.csv") as packageFile:
 
         # Inserts package object into hash table
         package_hash_table.insert(p_id, package_object)
+
 
 # -- ADDRESSES AND DISTANCES -- #
 
@@ -66,6 +67,7 @@ with open(r"CSV_Files/DistanceTable.csv", newline='') as distanceFile:
         # Adds remaining row to distance_lists
         distance_lists.append(row)
 
+
 # -- TRUCK LOADING -- #
 
 # Creates a list for each truck, manually loads packages
@@ -76,30 +78,49 @@ truck3_packages = [2, 4, 5, 7, 8, 9, 10, 11, 12, 17, 19, 21, 22, 23]
 
 # Assign truck ID to each package
 for package_id in truck1_packages:
+    # Searches for package in package hash table
     package_object = package_hash_table.search(package_id)
+    # If package is found
     if package_object:
+        # Assign truck ID
         package_object.truck_id = 1
+        # Assign loading time
+        package_object.loading_time = timedelta(hours=8, minutes=30)
 
+# Assign truck ID to each package
 for package_id in truck2_packages:
+    # Searches for package in package hash table
     package_object = package_hash_table.search(package_id)
+    # If package is found
     if package_object:
+        # Assign truck ID
         package_object.truck_id = 2
+        # Assign loading time
+        package_object.loading_time = timedelta(hours=9, minutes=5)
 
+# Assign truck ID to each package
 for package_id in truck3_packages:
+    # Searches for package in package hash table
     package_object = package_hash_table.search(package_id)
+    # If package is found
     if package_object:
+        # Assign truck ID
         package_object.truck_id = 3
-
+        # Assign loading time
+        package_object.loading_time = timedelta(hours=10, minutes=30)
 
 # Sets truck loading times
-truck1_loading = datetime(2024, 1, 31, 8, 0)
-truck2_loading = datetime(2024, 1, 31, 9, 5)
-truck3_loading = datetime(2024, 1, 31, 10, 30)
+truck1_loading = timedelta(hours=8, minutes=30)
+truck2_loading = timedelta(hours=9, minutes=5)
+truck3_loading = timedelta(hours=10, minutes=30)
 
 
 # -- TRUCK DELIVERY -- #
 
-# This is a nearest-neighbor algorithm. ## -- ADD MORE INFO HERE! -------------------
+# This is a nearest-neighbor algorithm. Given a list of packages and their addresses, it iteratively selects the
+# package nearest to the current truck location and delivers it. The algorithm calculates distances between the
+# current location and package destinations and updates delivery statuses and timestamps for each package,
+# keeping track of total distance traveled and the final delivery time.
 # Space complexity 0(1)
 # Time complexity O(n^2), where n is the number of packages
 def package_delivery(truck_packages, start_time):
@@ -188,16 +209,12 @@ truck3_total_distance = round(total_distance_truck3, 2)
 
 # Calculates total distance traveled by both trucks
 total_distance_all = truck1_total_distance + truck2_total_distance + truck3_total_distance
-print(total_distance_all)
 
 
 # -- PRINTING PACKAGE STATUS -- #
 
-# Function to search for each package by package ID at any time specified by the user
-# Space complexity O(1)
-# Time complexity O(1) because there will be no collisions in the buckets with the small amount of data & chaining
-# hashtable
-# Function to search for each package by package ID at any time specified by the user
+# Function to search for each package by package ID at any time specified by the user and display its info
+# It has a special case for package 9 to update its address after 10:20
 # Space complexity O(1)
 # Time complexity O(1) because there will be no collisions in the buckets with the small amount of data & chaining
 # hashtable
@@ -207,9 +224,12 @@ def individual_package_info(package_id, specified_time, specified_date):
 
     # Check if package exists
     if selected_package:
+
+        # Special case for package ID 9: Address is updated after 10:20
         # Check if the specified time is after 10:20
-        if specified_time >= datetime(2024, 1, 31, 10, 20):
-            # Special case for package ID 9: update address after 10:20
+        if specified_time >= timedelta(hours=10, minutes=20):
+
+            # If package ID is 9 and address has not yet been updated, update address and mark as updated
             if selected_package.id == 9 and not selected_package.address_updated:
                 selected_package.address = '410 S. State St.'
                 selected_package.address_updated = True
@@ -219,16 +239,26 @@ def individual_package_info(package_id, specified_time, specified_date):
                 selected_package.address = '300 State St.'
                 selected_package.address_updated = False
 
-        # Check the status of the package at the specified time
+        # Changes status of package depending on where the package is
         if selected_package.delivery_time:
-            comparison_result = specified_time >= selected_package.delivery_time
-            if comparison_result:
-                selected_package.status = 'Delivered'
-            else:
-                selected_package.status = 'En Route'
-        else:
-            selected_package.status = 'Not yet delivered'
 
+            # Package is set to hub if it hasn't been loaded
+            if specified_time < selected_package.loading_time:
+                selected_package.status = 'At hub'
+
+            # Package is en route if it is loaded onto truck and not yet delivered
+            elif specified_time < selected_package.delivery_time:
+                selected_package.status = 'En route'
+
+            # Package is set to delivered when appropriate
+            else:
+                selected_package.status = 'Delivered'
+
+        # If package not found message is printed
+        else:
+            selected_package.status = 'Package not found'
+
+        # Prints all package info
         print(f"\nPackage ID: {selected_package.id}")
         print(f"Address: {selected_package.address}")
         print(f"City: {selected_package.city}")
@@ -242,18 +272,21 @@ def individual_package_info(package_id, specified_time, specified_date):
         if selected_package.status == 'Delivered':
             print(f"Delivery Time: {selected_package.delivery_time}")
 
+    # If package not found
     else:
         print("Package not found.")
 
 
-# Function to print all package info including address, delivery status and delivery time if applicable
-# Has a special case for package 9 to update its address after 10:20
+# Function to print all package info. It has a special case for package 9 to update its address after 10:20
 # Space complexity O(1)
 # Time complexity O(1) because there will be no collisions in the buckets with the small amount of data & chaining
 # hashtable
 def all_package_info(specified_time, specified_date):
+    # Starts with the first package
     package_id = 1
-    package_found = False  # Flag to check if any package is found
+    # Flag to check if any package is found
+    package_found = False
+
     print("All Package Information:")
     while True:
         # Retrieve the package from the hashtable
@@ -261,10 +294,11 @@ def all_package_info(specified_time, specified_date):
 
         # Check if package exists
         if selected_package:
-            package_found = True  # Set flag to True since package is found
+            # Set flag to True since package is found
+            package_found = True
 
             # Check if the specified time is after 10:20
-            if specified_time >= datetime(2024, 1, 31, 10, 20):
+            if specified_time >= timedelta(hours=10, minutes=20):
                 # Special case for package ID 9: update address after 10:20
                 if selected_package.id == 9 and not selected_package.address_updated:
                     selected_package.address = '410 S. State St.'
@@ -277,17 +311,15 @@ def all_package_info(specified_time, specified_date):
 
             # Check the status of the package at the specified time
             if selected_package.delivery_time:
-                comparison_result = specified_time >= selected_package.delivery_time
-                if comparison_result:
-                    selected_package.status = 'Delivered'
+                if specified_time < selected_package.loading_time:
+                    selected_package.status = 'At hub'
+                elif specified_time < selected_package.delivery_time:
+                    selected_package.status = 'En route'
                 else:
-                    selected_package.status = 'En Route'
-            else:
-                selected_package.status = 'Not yet delivered'
+                    selected_package.status = 'Delivered'
 
             # Print package information
-            print(f"\nPackage ID: {selected_package.id}")
-            print(f"Address: {selected_package.address}")
+            print(f"\nPackage ID: {selected_package.id}, Address: {selected_package.address}")
             print(f"City: {selected_package.city}")
             print(f"Zip Code: {selected_package.zip_code}")
             print(f"Weight: {selected_package.weight}")
